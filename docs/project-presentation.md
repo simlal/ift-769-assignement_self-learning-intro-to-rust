@@ -126,7 +126,7 @@ TODO
 - Managed with **Cargo**, the Rust package manager
 
 ---
-<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Setup example<span style="font-weight: normal;"> Hello World! (1/2)</span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Setup example<span style="font-weight: normal;"> - Hello World! (1/2)</span></h2>
 
 **Env setup and features:**
 - Easy install: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
@@ -136,7 +136,7 @@ TODO
 - Quality of life with `rust-analyzer`: LSP, build/debug IDE support etc.
 
 ---
-<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Building with cargo <span style="font-weight: normal;"> Hello World! (2/2)</span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Building with cargo <span style="font-weight: normal;"> - Hello World! (2/2)</span></h2>
 
 To **initialize** a new project use `cargo new hello_world`. The **structure** will include a `src/` dir for code, `Cargo.toml` config file, `Cargo.lock` for dependencies and version and `target/` for build artifacts:
 
@@ -150,15 +150,22 @@ To **initialize** a new project use `cargo new hello_world`. The **structure** w
 - `cargo test`: Run tests in the project
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> EXAMPLE TITLE <span style="font-weight: normal;"></span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> THEORY STUFF <span style="font-weight: normal;"></span></h2>
 
 TODO
 
 ---
 
-<!-- input and output for helloworld via usb or uart -->
-<h2><img src="https://em-content.zobj.net/source/google/387/keyboard_2328-fe0f.png" width=60px> GREP PROJ? <span style="font-weight: normal;">TODO</span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/keyboard_2328-fe0f.png" width=60px> Guessing Game Project <span style="font-weight: normal;"> - Basic concepts (1/2)</span></h2>
 
 TODO
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/keyboard_2328-fe0f.png" width=60px> Guessing Game Project <span style="font-weight: normal;"> - Crates features (1/2)</span></h2>
+
+- Using another crate: `rand` for random number generation
+- `cargo doc --open` to generate and open documentation
+-etc.
 
 ---
