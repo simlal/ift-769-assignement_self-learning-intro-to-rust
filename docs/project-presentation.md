@@ -112,20 +112,42 @@ TODO
 
 <h2><img src="https://em-content.zobj.net/source/google/387/woman-technologist_1f469-200d-1f4bb.png" width=60px> Installation and setup</h2>
 
-**Installation**
+<u>**Installation**</u>:
 1. Install <span style="color:orange;">Rust</span> using `rustup` (Rust toolchain installer)
+
+<u>**Included toolchain**</u>:
+- `rustc`: Rust compiler
+- `rustup`: Rust toolchain manager
+- `rustfmt`: Rust code formatter
+- `cargo`: Rust package manager and build tool
 
 **Package and library management**
 - **Crates** are Rust packages that can be shared and reused
 - Managed with **Cargo**, the Rust package manager
 
 ---
-<h2><img src="https://em-content.zobj.net/source/google/387/light-bulb_1f4a1.png" width=60px> Installation and Cargo/Crates example<span style="font-weight: normal;"></span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Setup example<span style="font-weight: normal;"> Hello World! (1/2)</span></h2>
 
-<img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=200px style="display: block; margin: 0 auto;">
+**Env setup and features:**
+- Easy install: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+- Rustup for managing toolchains: `rustup update`
+- Included formatter: `rustfmt --check src/main.rs` (dry-run mode)
+- Cargo for building and managing projects: `cargo new project_name`
+- Quality of life with `rust-analyzer`: LSP, build/debug IDE support etc.
 
-<p style="text-align: center;">DEMO</p>
+---
+<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Building with cargo <span style="font-weight: normal;"> Hello World! (2/2)</span></h2>
 
+To **initialize** a new project use `cargo new hello_world`. The **structure** will include a `src/` dir for code, `Cargo.toml` config file, `Cargo.lock` for dependencies and version and `target/` for build artifacts:
+
+**Useful Cargo commands when building a project:**
+- `cargo build` or `cargo run` to compile and run the project. Use `--release` flag for compilation with optimizations inside `target/release/`
+- `cargo check`: Check the project for errors without building
+- `cargo doc`: Generate documentation for the project
+- `cargo clean`: Remove build artifacts
+- `cargo update`: Update dependencies
+- `cargo fmt`: Format the code according to the Rust style guidelines
+- `cargo test`: Run tests in the project
 ---
 
 <h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> EXAMPLE TITLE <span style="font-weight: normal;"></span></h2>
