@@ -9,11 +9,13 @@
 
 # Cleanup previous builds
 DOCS_DIR=$(pwd)
+echo Cleaning up previous builds at "$DOCS_DIR"...
 if [[ ! -d $DOCS_DIR ]]; then
     mkdir docs
 else
-    rm -f "$DOCS_DIR/*.html"
-    rm -f "$DOCS_DIR/*.pdf"
+    echo inside docs deleting
+    rm -f "$DOCS_DIR"/*.html
+    rm -f "$DOCS_DIR"/*.pdf
 fi
 
 # Building the html and pdf decks with marp/node
@@ -26,7 +28,7 @@ fi
 # Setting name and chromium-based path
 CHROME_PATH=$(which chromium)
 echo Setting up chromium path for Marp at "$CHROME_PATH"...
-BUILT_PRES_DECK=$DOCS_DIR/$(basename -- "$PRESENTATION_FILE" .md)_$(date +'%d-%m-%Y')
+BUILT_PRES_DECK=$DOCS_DIR/$(basename -- "$PRESENTATION_FILE" .md)
 echo Building HTML and PDF decks with \'Marp\'...
 marp --html "$PRESENTATION_FILE" -o "$BUILT_PRES_DECK".html
 marp --html --pdf "$PRESENTATION_FILE" -o "$BUILT_PRES_DECK".pdf

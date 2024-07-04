@@ -44,7 +44,7 @@ This project is part of an applied portion of the a course on theoritical
 concepts of computer science. The project is based on the following requirements:
 - [x] Choose a reference manual for a subject of interest in computer science (_The Rust Programming Language_ by Steve Klabnik and Carol Nichols) [[1]](#1)
 - [x] Follow the book to learn the concepts and apply to the proposed projects from the book.
-- [x] Make a [presentation](./docs/project-presentation.md) [[2]](#2) of the theoritical concepts of <span style="color:orange">Rust</span>.
+- [x] Make a [presentation](./docs/project-presentation.md) [[2]](#2) (html version [also here](./docs/project-presentation.html)) of the theoritical concepts of <span style="color:orange">Rust</span>.
     See custom scripts within for docs generation automation:
         - `nix-shell` environment: [build-docs.nix](./docs/build-docs.nix)
         - Helpers: [compress-jpgs.sh](./docs/compress-jpgs.sh) + [build-docs.sh](./docs/build-docs.sh).
