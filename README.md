@@ -39,12 +39,14 @@
 
 ## Introduction
 
+<span style="color:orange">**Rust**</span> is a modern programming language that focuses on <span style="color:orange">memory safety, speed, and concurrency</span>. It supports *multiple programming paradigms* and can be used for *multiple purposes* (i.e. systems programming, backend/server-side development, CLI tools etc.). Rust is also known for its *ownership system* that allows for memory safety without a garbage collector.
+
+This project is part of a course on self-driven learning of theoritical concepts of computer science. I choose to introduce myself by following along the rust book, implementing the projects and presenting the concepts learned. This `marp` [presentation](./docs/project-presentation.pdf) is a summary of the concepts learned and the projects implemented.
+
 ### Assignement requirements :memo:
-This project is part of an applied portion of the a course on theoritical 
-concepts of computer science. The project is based on the following requirements:
 - [x] Choose a reference manual for a subject of interest in computer science (_The Rust Programming Language_ by Steve Klabnik and Carol Nichols) [[1]](#1)
 - [x] Follow the book to learn the concepts and apply to the proposed projects from the book.
-- [x] Make a [presentation](./docs/project-presentation.md) [[2]](#2) (html version [also here](./docs/project-presentation.html)) of the theoritical concepts of <span style="color:orange">Rust</span>.
+- [x] Make a [presentation](./docs/project-presentation.md) [[2]](#2) (html version [also here](./docs/project-presentation.html)) of the theoritical concepts of Rust.
     See custom scripts within for docs generation automation:
         - `nix-shell` environment: [build-docs.nix](./docs/build-docs.nix)
         - Helpers: [compress-jpgs.sh](./docs/compress-jpgs.sh) + [build-docs.sh](./docs/build-docs.sh).
@@ -57,9 +59,9 @@ Learn the basic and specific features of <span style="color:orange">Rust</span> 
 Gain practical experience by implementing the projects from the book and demonstrate the capabilities of the language in real-world apps.
 
 **Practical projects**:
-- [x] **Project #0**: Guessing game CLI app
+- [x] **Project #0**: [Guessing game CLI app](./projects/guessing_game/)
 - [x] **Project #1**: Write an I/O CLI program (`grep` clone)
-- [ ] Optional Final Project: Building a Multithreaded Web Server
+- [o] Project #2 (Optional): Building a Multithreaded Web Server
 
 
 ## Development environment setup :hammer_and_wrench:
@@ -71,19 +73,7 @@ The Rust toolchain includes the following tools:
 - `cargo`: Package manager and build tool
 - `rustup`: Rust toolchain manager
 
-Going through the basics of setting up the development environment and creating a new project with Cargo...
-
-### Installation
-
-TODO
-
-### Package manager (Cargo) and build tools
-
-TODO
-
-### Project structure with Crates and Modules
-
-TODO
+See ***Project #0: Guessing Game*** goes through the process of setting up the development environment, creating a project and some of the basic features of the language.
 
 ## Applied projects :mag:
 

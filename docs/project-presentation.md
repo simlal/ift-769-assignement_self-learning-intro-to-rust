@@ -128,8 +128,10 @@ TODO
 
 Great way to introduce to the development environment and basic concepts of Rust:
 - Common programming concepts (types, funcs, control flow)
-- Use of another crate (rand) 
-- `cargo doc --open` to generate and view documentation
+- Use of another crate (rand) inside the project
+- I/O, String manipulation, error handling
+- Compiler warnings and error messages
+- `rust-analyzer` compiler FE for IDE support
 
 
 <br>
@@ -145,7 +147,80 @@ Great way to introduce to the development environment and basic concepts of Rust
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> THEORY STUFF <span style="font-weight: normal;"></span></h2>
+<h2> <img src="https://em-content.zobj.net/source/google/387/magnifying-glass-tilted-right_1f50e.png" width=60px> Demo reminders <span style="font-weight: normal;"> - P#0 (Guessing game)</span></h2>
+
+- `Result` type with `.expect()` for error handling
+- `cargo doc --open` to generate and view documentation
+- `cargo fmt` to format the code
+- Type annotations and `let` for variable declaration
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/memo_1f4dd.png" width=60px> Variables and mutability <span style="font-weight: normal;"></span></h2>
+
+Variables are immutable by default
+```rust
+let x = 5;          // immutable variable
+x = 10;             //!ERROR!
+
+let mut y = 10;     // mutable variable
+y = 15;             // Will compile (overwrite with same type)
+let y = "hello";    // Will compile (shadowing)
+```
+<br>
+
+Constants are always immutable within the scope
+```rust
+const MAX_POINTS: u32 = 100_000;
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/abacus_1f9ee.png" width=60px> Statically typed + type inference <span style="font-weight: normal;"></span></h2>
+
+`rust-analyzer` provides type hints and suggestions
+```rust
+let secret_num = rand::thread_rng().gen_range(1..101); // Will infer i32 type
+```
+
+Explicit type annotations can or must be used
+```rust
+let mut num: String = String::new(); // Can be annotated or inferred
+num = "42".to_string();              
+
+let guess = guess.trim().parse().expect("Please enter a number");  // Wont Compile
+let guess: u32 = guess.trim().parse().expect("Please enter a number"); // Will compile
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/abacus_1f9ee.png" width=60px> Data types <span style="font-weight: normal;"> - Scalars</span></h2>
+
+
+| Data type | Size | Specifity |
+|-----------|-------------|-----------|
+| int       | 8-128 bits       | signed/unsigned |
+| float     | 32/64 bits      | simple/double precision |
+| char      | 4 bytes          | unicode |
+| bool      | 1 byte           | true/false |
+
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/abacus_1f9ee.png" width=60px> Data types <span style="font-weight: normal;"> - Compound</span></h2>
+
+
+| Data type | Size | Elements | Example | Access |
+|-----------|-------------|-----------|--|---|
+| tuple     | fixed         | mixed types | `(1, "hello", 3.14)` | `tuple.0` |
+| array     | fixed         | same type | `[1, 2, 3, 4, 5]` | `array[0]` |
+| vec       | dynamic       | same type | `vec![1, 2, 3, 4, 5]` | `vec[0]` |
+
+<span style="color:orange">Access safety with runtime bounds checking.</span> If using `array[10]` will panic at runtime instead of *undefined behavior like in C/C++*
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Functions <span style="font-weight: normal;"></span></h2>
 
 TODO
 

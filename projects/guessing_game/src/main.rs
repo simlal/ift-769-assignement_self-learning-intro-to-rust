@@ -17,7 +17,7 @@ fn main() {
         .expect("Failed to read line");
     
     // Convert to u32 with shadowing
-    let guess: u32 = guess.trim().parse().expect("Please type an interger!");
+    let guess = guess.trim().parse().expect("Please type an interger!");
     println!("You guessed: {}", guess);
 
     // Get the result
