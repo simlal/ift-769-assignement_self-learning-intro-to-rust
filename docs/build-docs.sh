@@ -13,9 +13,16 @@ echo Cleaning up previous builds at "$DOCS_DIR"...
 if [[ ! -d $DOCS_DIR ]]; then
     mkdir docs
 else
-    echo inside docs deleting
     rm -f "$DOCS_DIR"/*.html
     rm -f "$DOCS_DIR"/*.pdf
+fi
+
+echo Cleaning up the presentation html for github pages...
+PAGES_DIR=$DOCS_DIR/pages
+if [[ ! -d $PAGES_DIR ]]; then
+    mkdir pages
+else
+    rm -f "$PAGES_DIR"/*.html
 fi
 
 # Building the html and pdf decks with marp/node
@@ -29,9 +36,12 @@ fi
 CHROME_PATH=$(which chromium)
 echo Setting up chromium path for Marp at "$CHROME_PATH"...
 BUILT_PRES_DECK=$DOCS_DIR/$(basename -- "$PRESENTATION_FILE" .md)
-echo Building HTML and PDF decks with \'Marp\'...
-marp --html "$PRESENTATION_FILE" -o "$BUILT_PRES_DECK".html
+echo Building PDF decks with \'Marp\'...
 marp --html --pdf "$PRESENTATION_FILE" -o "$BUILT_PRES_DECK".pdf
+
+echo Building HTML decks for GitHub Pages with \'Marp\'...
+BUILT_PRES_PAGES=$PAGES_DIR/$(basename -- "$PRESENTATION_FILE" .md)
+marp --html "$PRESENTATION_FILE" -o "$BUILT_PRES_PAGES".html
 
 echo Done! Exiting nix-shell.
 exit 0
