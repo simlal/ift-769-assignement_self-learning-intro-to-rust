@@ -28,8 +28,7 @@ paginate: true
 
 <u>Book overview</u>:
 - Official guide to the Rust programming language
-- Covers the basics (syntax, types, functions)
-- Build tool and package manager (Cargo)
+- Covers the basics (syntax, types, functions) + toolchain
 - Advanced and Rust-specific features:
     - Ownership, borrowing, lifetimes
     - Unique error handling
@@ -50,32 +49,6 @@ paginate: true
 7. Functional and OO features
 8. <span style="color:orange">Smart pointers and Concurrency</span>
 9. Patterns and matching + Advanced features
-
-<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
-
----
-
-<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #1 - <span style="font-weight: normal;">Write an I/O CLI program</span></h2>
-
-**Halfway project for a `grep` clone CLI app covers:**
-1. Code organization (crates, modules)
-2. Use of containers and strings
-3. Error handling
-4. Using traits and lifetimes
-5. Testing and documentation
-
-<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
-
----
-
-<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #2 - <span style="font-weight: normal;">Building a Multithreaded Web Server</span></h2>
-
-**Final Project from the book includes :**
-1. Learn TCP/IP networking and HTTP
-2. Listen to TCP connections on a socket
-3. Parse HTTP requests
-4. Generate HTTP responses
-5. Handle multiple requests concurrently with a thread pool
 
 <font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
 
@@ -110,7 +83,7 @@ TODO
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/woman-technologist_1f469-200d-1f4bb.png" width=60px> Installation and setup</h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Installation and setup</h2>
 
 <u>**Installation**</u>:
 1. Install <span style="color:orange;">Rust</span> using `rustup` (Rust toolchain installer)
@@ -125,8 +98,10 @@ TODO
 - **Crates** are Rust packages that can be shared and reused
 - Managed with **Cargo**, the Rust package manager
 
+
 ---
-<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Setup example<span style="font-weight: normal;"> - Hello World! (1/2)</span></h2>
+
+<h2><img src="https://em-content.zobj.net/source/google/387/national-park_1f3de-fe0f.png" width=60px> Development environment<span style="font-weight: normal;"> - Toolchain overview </span></h2>
 
 **Env setup and features:**
 - Easy install: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
@@ -136,9 +111,7 @@ TODO
 - Quality of life with `rust-analyzer`: LSP, build/debug IDE support etc.
 
 ---
-<h2><img src="https://em-content.zobj.net/source/google/387/man-technologist_1f468-200d-1f4bb.png" width=60px> Building with cargo <span style="font-weight: normal;"> - Hello World! (2/2)</span></h2>
-
-To **initialize** a new project use `cargo new hello_world`. The **structure** will include a `src/` dir for code, `Cargo.toml` config file, `Cargo.lock` for dependencies and version and `target/` for build artifacts:
+<h2><img src="https://em-content.zobj.net/source/google/387/national-park_1f3de-fe0f.png" width=60px> Development environment<span style="font-weight: normal;"> - Cargo features </span></h2>
 
 **Useful Cargo commands when building a project:**
 - `cargo build` or `cargo run` to compile and run the project. Use `--release` flag for compilation with optimizations inside `target/release/`
@@ -148,6 +121,28 @@ To **initialize** a new project use `cargo new hello_world`. The **structure** w
 - `cargo update`: Update dependencies
 - `cargo fmt`: Format the code according to the Rust style guidelines
 - `cargo test`: Run tests in the project
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #0 - <span style="font-weight: normal;">Guessing game</span></h2>
+
+Great way to introduce to the development environment and basic concepts of Rust:
+- Common programming concepts (types, funcs, control flow)
+- Use of another crate (rand) 
+- `cargo doc --open` to generate and view documentation
+
+
+<br>
+
+<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
+
+
+---
+
+<p style="text-align: center; font-size: 2em;">🚀 Demo Time!
+<br>
+<p style="text-align: center; font-size: 1.5em;">Simple guessing game CLI app 🎲 (Basics and dev environment features)</p>
+
 ---
 
 <h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> THEORY STUFF <span style="font-weight: normal;"></span></h2>
@@ -156,16 +151,34 @@ TODO
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/keyboard_2328-fe0f.png" width=60px> Guessing Game Project <span style="font-weight: normal;"> - Basic concepts (1/2)</span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #1 - <span style="font-weight: normal;">Write an I/O CLI program</span></h2>
+
+**Halfway project for a `grep` clone CLI app covers:**
+1. Code organization (crates, modules)
+2. Use of containers and strings
+3. Error handling
+4. Using traits and lifetimes
+5. Testing and documentation
+
+<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #2 - <span style="font-weight: normal;">Building a Multithreaded Web Server</span></h2>
+
+**Final Project from the book includes :**
+1. Learn TCP/IP networking and HTTP
+2. Listen to TCP connections on a socket
+3. Parse HTTP requests
+4. Generate HTTP responses
+5. Handle multiple requests concurrently with a thread pool
+
+<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> THEORY STUFF <span style="font-weight: normal;"></span></h2>
 
 TODO
 
----
 
-<h2><img src="https://em-content.zobj.net/source/google/387/keyboard_2328-fe0f.png" width=60px> Guessing Game Project <span style="font-weight: normal;"> - Crates features (1/2)</span></h2>
-
-- Using another crate: `rand` for random number generation
-- `cargo doc --open` to generate and open documentation
--etc.
-
----
