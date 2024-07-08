@@ -41,12 +41,12 @@
 
 <span style="color:orange">**Rust**</span> is a modern programming language that focuses on <span style="color:orange">memory safety, speed, and concurrency</span>. It supports *multiple programming paradigms* and can be used for *multiple purposes* (i.e. systems programming, backend/server-side development, CLI tools etc.). Rust is also known for its *ownership system* that allows for memory safety without a garbage collector.
 
-This project is part of a course on self-driven learning of theoritical concepts of computer science. I choose to introduce myself by following along the rust book, implementing the projects and presenting the concepts learned. This `marp` [presentation](./docs/project-presentation.pdf) is a summary of the concepts learned and the projects implemented.
+This project is part of a course on self-driven learning of theoritical concepts of computer science. I choose to to follow along the Rust book and implementing the projects as an introduction to the language. A work-inprogress `marp` presentation about the summary of concepts learned and implemented projects can is hosted here: https://simlal.github.io/ift-769-self-learning-intro-to-rust/ [[2]](#2). A PDF version can also be found [here](./docs/project-presentation.pdf).
 
 ### Assignement requirements :memo:
 - [x] Choose a reference manual for a subject of interest in computer science (_The Rust Programming Language_ by Steve Klabnik and Carol Nichols) [[1]](#1)
 - [x] Follow the book to learn the concepts and apply to the proposed projects from the book.
-- [x] Make a [presentation](./docs/project-presentation.md) [[2]](#2) (html version [also here](./docs/project-presentation.html)) of the theoritical concepts of Rust.
+- [x] Make a [presentation](https://simlal.github.io/ift-769-self-learning-intro-to-rust/) [[2]](#2) (Markdown source code [[3]](#3)) of the theoritical concepts of Rust.
     See custom scripts within for docs generation automation:
         - `nix-shell` environment: [build-docs.nix](./docs/build-docs.nix)
         - Helpers: [compress-jpgs.sh](./docs/compress-jpgs.sh) + [build-docs.sh](./docs/build-docs.sh).
@@ -58,10 +58,10 @@ Learn the basic and specific features of <span style="color:orange">Rust</span> 
 
 Gain practical experience by implementing the projects from the book and demonstrate the capabilities of the language in real-world apps.
 
-**Practical projects**:
-- [x] **Project #0**: [Guessing game CLI app](./projects/guessing_game/)
-- [x] **Project #1**: Write an I/O CLI program (`grep` clone)
-- [o] Project #2 (Optional): Building a Multithreaded Web Server
+**Practical projects:**
+- [x] **Project #0:** [Guessing game CLI app](./projects/guessing_game/)
+- [x] **Project #1:** Write an I/O CLI program (`grep` clone)
+- [ ] **Project #2 (Optional):** Building a Multithreaded Web Server
 
 
 ## Development environment setup :hammer_and_wrench:
@@ -101,5 +101,8 @@ TODO
 <!-- As numbered footnotes-->
 <a id="1">[1]</a> **The Rust Programming Language**. Klabnik, Steve, and Carol Nichols. 2nd ed., No Starch Press.
 
-<a id="2">[2]</a> **Project Presentation**. [Link to Markdown/Marp presentation](./docs/project-presentation.md)
+<a id="2">[2]</a> **Introduction to Rust Programming Language**. Simon Lalonde. GitHub Pages. https://simlal.github.io/ift-769-self-learning-intro-to-rust/
+
+<a id="3">[3]</a> **Introduction to Rust Programming Language**. Simon Lalonde. Markdown source code of presentation.
+
 
