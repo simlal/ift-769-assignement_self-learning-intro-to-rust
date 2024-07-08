@@ -2,7 +2,7 @@
 
 ## Table of contents
 
-<details open>
+<details closed>
 <summary><a href="#introduction">Introduction</a></summary>
 
 - [Assignement requirements](#assignement-requirements-memo)
@@ -10,7 +10,7 @@
 
 </details>
 
-<details open>
+<details closed>
 <summary><a href="#development-environment-setup-hammer_and_wrench">Development environment setup</a></summary>
 
 - [Installation](#installation)
@@ -19,13 +19,14 @@
 
 </details>
 
-<details open>
+<details>
 <summary><a href="#applied-projects-mag">Applied projects</a></summary>
 
 - [A simple guessing game CLI app](#a-simple-guessing-game-cli-app-gamedie)
 - [Write an I/O CLI `grep`-clone program](#write-an-io-cli-grep-clone-program-wrench)
 - [Building a Multithreaded Web Server](#building-a-multithreaded-web-server-globe_with_meridians)
 
+</details>
 
 <details>
 <summary><a href="#conclusion">Conclusion</a></summary>
