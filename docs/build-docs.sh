@@ -18,12 +18,8 @@ else
 fi
 
 echo Cleaning up the presentation html for github pages...
-PAGES_DIR=$DOCS_DIR/pages
-if [[ ! -d $PAGES_DIR ]]; then
-    mkdir pages
-else
-    rm -f "$PAGES_DIR"/*.html
-fi
+ROOT_DIR=$(git rev-parse --show-toplevel)
+rm "$ROOT_DIR"/*.html
 
 # Building the html and pdf decks with marp/node
 PRESENTATION_FILE=$DOCS_DIR/project-presentation.md
@@ -40,8 +36,7 @@ echo Building PDF decks with \'Marp\'...
 marp --html --pdf "$PRESENTATION_FILE" -o "$BUILT_PRES_DECK".pdf
 
 echo Building HTML decks for GitHub Pages with \'Marp\'...
-BUILT_PRES_PAGES=$PAGES_DIR/$(basename -- "$PRESENTATION_FILE" .md)
-marp --html "$PRESENTATION_FILE" -o "$BUILT_PRES_PAGES".html
+marp --html "$PRESENTATION_FILE" -o "$ROOT_DIR"/index.html
 
 echo Done! Exiting nix-shell.
 exit 0
