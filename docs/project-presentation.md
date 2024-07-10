@@ -220,9 +220,163 @@ let guess: u32 = guess.trim().parse().expect("Please enter a number"); // Will c
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Functions <span style="font-weight: normal;"></span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Functions <span style="font-weight: normal;"> - <code>main</code></span></h2>
 
-TODO
+Functions are defined with the `fn` keyword. All programs start with a `main` function
+```rust
+fn main() {
+    println!("Hello, world!");
+    
+    say_hello_back();
+}
+
+fn say_hello_back() {
+    println!("Hello back!");
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Functions <span style="font-weight: normal;"> - Parameters and return</span></h2>
+
+**Function signatures and use**:
+
+- Parameters must have type annotations
+- Return type must be specified with `->`
+- Functions can return multiple values with tuples
+
+```rust
+fn main() {
+    let num_sum = add(5, 10);
+    println!("The sum is: {}", num_sum);
+}
+
+fn add(x: i32, y: i32) -> i32 {
+    x + y
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/scroll_1f4dc.png" width=60px> Statements <span style="font-weight: normal;"></span></h2>
+
+- `let` is a statement, and `x + y` is an expression.
+
+- Compared to C/C++, var assignment is an expression in Rust and **does not** return a value
+    
+- Statements must end with a semicolon `;`
+
+```rust
+let x = 5;          // statement
+let y = z = 10;     // ERROR! z = 10 does not return a value
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/light-bulb_1f4a1.png" width=60px> Expressions <span style="font-weight: normal;"></span></h2>
+
+- Expressions **evaluate** to a value (_func calls, operations, blocks_)
+- No `;` at the end of expressions
+- **Blocks** `{}` are expressions and can be used to create new scopes + return values
+
+```rust
+fn main() {
+    let x = 5; // whole line is statement, 5 is expression
+    let y = {
+        let x = 3;
+        x + 1
+    }; // an expression
+    println!("The value of y is: {}", y); // Prints 4!
+}
+```
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/toolbox_1f9f0.png" width=60px> Control Flow<span style="font-weight: normal;"> - Conditionals</span></h2>
+
+**if/else**: (Only takes boolean expressions)
+```rust
+// Classic if/else if/else
+let mut condition = false;
+if number < 5 {
+    println!("Too small!");
+} else if number > 5 {
+    println!("Too big!");
+} else {
+    println!("Just right!");
+    condition = true;
+}
+
+// Assignement with if/else
+let result = if condition { 5 } else { 6 };
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/toolbox_1f9f0.png" width=60px> Control Flow<span style="font-weight: normal;"> - Loops overview</span></h2>
+
+3 types of loops in <span style="color:orange;">Rust</span>: **`loop`**, **`while`** and **`for`**
+
+- **`loop`**: Infinite loop until `break` or return
+- **`while`**: Loop while condition is true
+- **`for`**: Loop over an iterator
+
+<br>
+
+```rust
+// Conditional loop
+let mut counter = 0;
+while counter < 10 {
+    println!("counter = {counter}");
+    counter += 1;
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/toolbox_1f9f0.png" width=60px> Control Flow<span style="font-weight: normal;"> - Loop labels</span></h2>
+
+**Loop labels** can be used to distinguish nested loops (_break_ and _continue_)
+```rust
+fn main() {
+    let mut count = 0;
+    'counting_up: loop { // Label the outer loop
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;   // Break the outer loop
+            }
+            remaining -= 1;
+        }
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/toolbox_1f9f0.png" width=60px> Control Flow<span style="font-weight: normal;"> - Collection with <code>for</code></span></h2>
+
+No need for manual indexing, **`for`** loops iterate over collections
+```rust
+let collection = [10, 20, 30, 40, 50];
+for element in collection {
+    println!("The value is: {element}");
+};
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Ownership <span style="font-weight: normal;"> - TODO</span></h2>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> TODO <span style="font-weight: normal;"></span></h2>
 
 ---
 
