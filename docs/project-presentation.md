@@ -372,7 +372,160 @@ for element in collection {
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Ownership <span style="font-weight: normal;"> - TODO</span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Ownership <span style="font-weight: normal;"> - Overview</span></h2>
+
+**Ownership** is a key feature of <span style="color:orange;">Rust</span> regarding the management of stack (_static, compile-time known, LIFO_) and heap memory (_allocated at runtime, dynamic, FIFO_). 
+
+It ensures memory safety without garbage collection.
+
+<br>
+
+<span style="color:orange;">**The 3 rules of ownership**</span>:
+1. Each value in Rust has a variable that's its owner
+2. There can only be one owner at a time
+3. When the owner goes out of scope, the value will be dropped
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Ownership <span style="font-weight: normal;"> - String Type vs. literals</span></h2>
+
+```rust
+let s1: &str = "hello"; // string literal, immutable
+
+{
+    // s1 is still valid
+    let mut s2 = String::from("hello"); // allocated on the heap
+    s2.push_str(", world!"); // Mutable
+    
+} // calls drop(), s2 goes out of scope its memory is freed
+```
+
+- String literals hardcoded into binary. Immutable and fast.
+- **`String`** type is allocated on the heap and is mutable. Memory freed when out of scope. Similar to smart pointers in C++.
+
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Ownership <span style="font-weight: normal;"> - Move</span></h2>
+
+```rust
+// MOVE
+let s1 = String::from("hello");
+let s2 = s1; // s1 is moved to s2
+println!("{s1}"); // ERROR! s1 is no longer valid
+
+// DEEP COPY
+let s3 = s2.clone(); // deep copy
+println!("{s2}"); // s2 is still valid
+```
+
+
+<div style="display: flex; align-items: center; justify-content: space-between; width: 85%;">
+    <p>No <em>double free</em> or <em>dangling pointers</em> with the <strong>move</strong> operation (first 3 lines of code).</p>
+    <img src="./img/fig4-4_move.svg" height="300">
+</div>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Ownership <span style="font-weight: normal;"> - Copy</span></h2>
+
+Types that implement the `Copy` trait are copied instead of moved. Stack-only data types (i.e. integers, booleans, char etc.) for speed and efficiency. 
+
+```rust
+let x = 5;
+let y = x; // x is copied to y
+
+println!("{x}"); // x is still valid. Same as x.clone() but no needed
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Taking ownership <span style="font-weight: normal;"> - Functions </span></h2>
+
+```rust
+fn main() {
+    let s = String::from("hello");  // s comes into scope
+
+    takes_ownership(s);             // s's value moves into the function...
+
+    let x = 5;                      // x comes into scope
+                                    // but i32 is Copy, so x available afterward
+    
+    println!("{s} world!");         // ERROR! s is no longer valid
+} 
+
+fn takes_ownership(some_string: String) { // some_string comes into scope
+    println!("{some_string}");
+} // `some_string` goes out of scope, `drop` is called and memory is freed
+
+fn makes_copy(some_integer: i32) { // some_integer comes into scope
+    println!("{some_integer}");
+} // `some_integer` goes out of scope, nothing happens.
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/key_1f511.png" width=60px> Transfer Ownership <span style="font-weight: normal;"> - Function return and scope</span></h2>
+
+A bit tedious, but ownership can be transferred back to the calling function with the return value. 
+
+```rust
+fn main() {
+    let s1 = gives_ownership();         // `gives_ownership` moves its return val into s1
+
+    let s2 = String::from("hello");     // s2 comes into scope
+
+    let s3 = takes_and_gives_back(s2);  // s2 is moved into `takes_and_gives_back` becomes invalid
+                                        // `takes_and_gives_back` returns a new String that into s3
+} 
+
+fn gives_ownership() -> String {             // `gives_ownership` move return val into the 
+                                             // function that calls it
+
+    let some_string = String::from("yours"); // some_string comes into scope
+
+    some_string                              // some_string is returned moves out of calling func
+}
+
+// This function takes a String and returns one
+fn takes_and_gives_back(a_string: String) -> String { // a_string comes into scope
+
+    a_string  // a_string is returned and moves out to the calling function
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> References and Borrowing <span style="font-weight: normal;"> - Overview</span></h2>
+
+Kind of like passing by reference in C/C++ but with some key differences: 
+- **References** are immutable by default
+- **Borrowing** allows multiple references to the same data
+- **Mutable references** are exclusive and have strict rules
+
+<br>
+
+References are created with the `&` symbol, and borrowing is done with `&mut` for mutable references (see next slide).
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> References and Borrowing<span style="font-weight: normal;"> - Simple borrowing example</span></h2>
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1); 
+
+    println!("The length of '{s1}' is {len}."); // s1 still valid because it is borrowed
+}
+
+fn calculate_length(s: &String) -> usize { // s is a reference to a String
+    s.len()
+} // s goes out of scope, but does not have ownership of what it refers to
+```
+<img src="./img/fig4-5_borrowing-simple.svg" height="250">
+
 
 ---
 
