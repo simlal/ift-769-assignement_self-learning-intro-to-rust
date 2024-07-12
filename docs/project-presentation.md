@@ -369,6 +369,14 @@ for element in collection {
     println!("The value is: {element}");
 };
 ```
+<br>
+
+🔎 **Ranges**, use the `..` operator
+```rust
+for number in 1..4 {
+    println!("The value is: {number}");
+}
+```
 
 ---
 
@@ -509,7 +517,7 @@ References are created with the `&` symbol, and borrowing is done with `&mut` fo
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> References and Borrowing<span style="font-weight: normal;"> - Simple borrowing example</span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> References and Borrowing <span style="font-weight: normal;"> - Simple borrowing example</span></h2>
 
 ```rust
 fn main() {
@@ -524,8 +532,169 @@ fn calculate_length(s: &String) -> usize { // s is a reference to a String
     s.len()
 } // s goes out of scope, but does not have ownership of what it refers to
 ```
+
 <img src="./img/fig4-5_borrowing-simple.svg" height="250">
 
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> Mutable references <span style="font-weight: normal;"> - General case</span></h2>
+
+**Borrowed references are not mutable by default**. To allow mutation, use `&mut`
+
+```rust
+// let s = String::from("hello"); // WOULD NOT COMPILE!
+let mut s = String::from("hello");
+change(&mut s);
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> Mutable references <span style="font-weight: normal;"> - Data races safety</span></h2>
+
+<u>Compile time checks for mutable refs</u>
+⚠️ **NO** multiple mutable references to the same data
+
+```rust
+    let mut s = String::from("hello");
+    let r1 = &mut s;
+    let r2 = &mut s;   // ERROR! r1 is still active
+    println!("{}, {}", r1, r2);
+```
+
+<br>
+
+⚠️ **NO** mutable references while immutable references are active
+
+```rust
+    let mut s = String::from("hello");
+    let r1 = &s;        // OK
+    let r2 = &s;        // OK
+    let r3 = &mut s;    // ERROR! r1 and r2 are still active
+    println!("{}, {}, {}", r1, r2, r3);
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/handshake_1f91d.png" width=60px> Mutable references <span style="font-weight: normal;"> - Data races safety (2/2)</span></h2>
+
+🔎 Use of scopes to limit mutable references
+
+```rust
+let mut s = String::from("hello");
+{
+    let r1 = &mut s;
+} // r1 goes out of scope, allowing a new mutable reference
+let r2 = &mut s; // OK!
+```
+
+🔎 Reference's scope ends after the last usage of the reference.
+
+```rust
+    let mut s = String::from("hello");
+
+    let r1 = &s; // no problem
+    let r2 = &s; // no problem
+    println!("{r1} and {r2}");
+    // variables r1 and r2 will not be used after this point
+
+    let r3 = &mut s; // no problem because r1/r2 are no longer valid
+    println!("{r3}");
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/warning_26a0-fe0f.png" width=60px> Reference caution <span style="font-weight: normal;"> - Fixing a state management problem </span></h2>
+
+❗Tedious or even problematic when working on a reference
+
+```rust
+let mut s = String::from("hello world");
+let word_index = first_word(&s); // word_index will get the value 5
+
+s.clear(); // empties the String, making it equal to ""
+// `word_index` still has the value 5 here, but no more string tied because s is invalid
+println!("the first word is: {s[..word_index]}"); // ERROR! s is empty
+```
+```rust
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+    s.len()
+}
+// Imagine implementing second_word() and managing state...
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/kitchen-knife_1f52a.png" width=60px> String Slice Type <span style="font-weight: normal;"> - A kind of reference </span></h2>
+
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    
+<p><span style="font-weight: bold;">Slices</span> are references to a contiguous sequence of elements in a collection. They are a reference to a part of a string or array.</p>
+    
+<img src="./img/fig4-6_string-slice.svg" height="350" style="margin: 0 30;">
+
+</div>
+
+```rust
+    let s = String::from("hello world");
+    let hello = &s[0..5];   // same as &s[..5]. Excludes the last index 
+    let world = &s[6..11];  // same as &s[6..]. Includes the first index
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/kitchen-knife_1f52a.png" width=60px> String Slice <span style="font-weight: normal;"> - Refactoring <code>first_word()</code></span></h2>
+
+```rust
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i]; // return a slice(ref) of the string
+        }
+    }
+    &s[..]  // or return the slice of whole string
+}
+```
+
+```rust
+// Compiler assures that the slice is valid as long as the string is valid
+fn main() {
+    let mut s = String::from("hello world");
+    let word = first_word(&s); // immutable borrow (return type is &str)
+    
+    s.clear(); // error! mutable borrow while immutable borrow is active
+    println!("the first word is: {word}");
+}
+```
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/kitchen-knife_1f52a.png" width=60px> Other Slice types <span style="font-weight: normal;"> - Array example <code>first_word()</code></span></h2>
+
+Similar to strings, slices can be used with arrays
+
+```rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3]; // slice is of type &[i32]
+    assert_eq!([2, 3], slice);
+}
+```
+
+Useful for passing parts of arrays to functions without copying the data.
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
 
 ---
 
