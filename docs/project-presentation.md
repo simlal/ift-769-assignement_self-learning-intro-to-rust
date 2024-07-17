@@ -46,9 +46,8 @@ paginate: true
 4. Containers/Collections
 5. <span style="color:orange">Error Handling</span>
 6. <span style="color:orange">Generics, Traits and Lifetimes</span>
-7. Functional and OO features
+7. OO features
 8. <span style="color:orange">Smart pointers and Concurrency</span>
-9. Patterns and matching + Advanced features
 
 <font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
 
@@ -56,13 +55,14 @@ paginate: true
 
 <h2><img src="https://rustacean.net/assets/rustacean-orig-noshadow.svg" width=60px> <span style="color:orange;">Rust</span> Overview</h2>
 
-- **Systems programming language** focused on **safety** and **performance**
-- TODO
+Written by **Graydon Hoare in 2006**, Rust is a systems programming language focused on safety, speed, and concurrency. Backed by **Mozilla** and now the Rust Foundation.
 
 <strong><u>Currently known projects</u></strong>
 TODO
 <strong><u>Predicted use cases</u></strong>
 TODO
+
+<font size="4"> Rust Programming Language. 2024. [Official Website](https://www.rust-lang.org/)</font>
 
 ---
 
@@ -692,6 +692,150 @@ fn main() {
 
 Useful for passing parts of arrays to functions without copying the data.
 
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/building-construction_1f3d7-fe0f.png" width=60px> Structs <span style="font-weight: normal;"> - Overview</span></h2>
+
+**Structs** data structure encapsulate fields of specific types and methods (just like in C++/OO language). 
+- If declared mutable, the whole struct is mutable.
+- dot notation for named field access
+- Methods are defined within the `impl` block
+
+```rust
+let mut user1 = User {
+    username: String::from("user1"),
+    phone: 1234567890
+    active: true,
+};
+
+user1.active = false;
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/building-construction_1f3d7-fe0f.png" width=60px> Structs <span style="font-weight: normal;"> - Shorthands</span></h2>
+
+```rust
+fn build_user(username: String, phone: u32) -> User {  // Returns a User struct
+    User {
+        username, // shorthand for username: username
+        phone,    // shorthand for phone: phone
+        active: true
+    }
+}
+
+// Struct update syntax
+let user2 = User {
+    phone: 9876543210
+    ..user1 // copy the rest of the fields from user1
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/building-construction_1f3d7-fe0f.png" width=60px> Tuple Structs <span style="font-weight: normal;"></span></h2>
+
+**Tuple structs** are similar, but don't have named fields. Useful for naming tuples and creating new types.
+
+```rust
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+
+fn main() {
+    // black and origin are different types
+    let red = Color(255, 0, 0);
+    let origin = Point(0, 0, 0);
+}
+// Cannot pass a Point even though they have the same fields' types
+fn make_paler(color: Color) -> Color {  
+    Color(color.0 / 2, color.1 / 2, color.2 / 2)
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Methods <span style="font-weight: normal;"> - Basic implementation</span></h2>
+
+Methods are defined within the `impl` block.
+
+```rust
+struct SumArgs {
+  n1: i32,
+  n2: i32,
+}
+impl SumArgs {
+  fn add_numbers(&self) -> i32 { // self is alias for Self (instead of args: &SumArgs)
+    self.n1 + self.n2
+  }
+}
+fn main() {
+  let args = SumArgs { n1: 2, n2: 3 };
+  let sum = args.add_numbers(); // Or SumArgs::add_numbers(&args)
+  println!("{} + {} = {}", args.n1, args.n2, sum);
+}
+```
+<font size="4"> Gian Lorenzetto. Rust - Structs, Functions and Methods. 2021. [Medium Post](https://gian-lorenzetto.medium.com/rust-structs-functions-and-methods-d60fd597d956)</font>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Methods <span style="font-weight: normal;"> - Mutability</span></h2>
+
+Use `&self` for read-only and `&mut self` for methods that modify the struct.
+
+```rust
+struct Rectangle {
+    width: u32,
+    height: u32
+}
+impl Rectangle {
+    fn area(&self) -> u32 {  // takes ownership of self (read-only)
+        self.width * self.height
+    }
+    fn half_rect(&mut self) {  // borrows mutably
+        self.width /= 2;
+        self.height /= 2;
+    }
+    fn width(&self) -> bool {  // Getters in Rust
+        self.width > 0
+    }
+}
+let mut rect = Rectangle { width: 10, height: 20 }; 
+println!("rect's width is valid: {} because width={}", rect.width(), rect.width);
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Methods <span style="font-weight: normal;"> - Automatic referencing/dereferencing</span></h2>
+
+Unlike in C/C++, <span style="color: orange;">Rust automatically references and dereferences </span>when calling methods (No `->` operator or `(*object).something()`)
+
+```rust
+p1.distance(&p2); // Both are the same, version1 is more readable
+(&p1).distance(&p2);
+```
+With `object.something()`, Rust automatically adds in `&`, `&mut`, or `*` to match signature of the method.
+
+ 🔎 It depends wether method is **reading (`&self`), writing (`&mut self`), or consuming (`self`)**
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> Methods <span style="font-weight: normal;"> - Associated function</span></h2>
+
+When a function is associated with a struct, it doesn't take `self` as a parameter.
+- Often used for constructor
+- Called with the `::` syntax
+
+```rust
+impl Rectangle {
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
+}
+let square = Rectangle::square(10);
+```
 ---
 
 <h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
