@@ -102,8 +102,8 @@ TODO
 <!-- As numbered footnotes-->
 <a id="1">[1]</a> **The Rust Programming Language**. Klabnik, Steve, and Carol Nichols. 2nd ed., No Starch Press.
 
-<a id="2">[2]</a> **Introduction to Rust Programming Language**. Simon Lalonde. GitHub Pages. https://simlal.github.io/ift-769-self-learning-intro-to-rust/
+<a id="2">[2]</a> **Introduction to Rust Programming Language**. Simon Lalonde. 2024. GitHub Pages. https://simlal.github.io/ift-769-self-learning-intro-to-rust/
 
-<a id="3">[3]</a> **Introduction to Rust Programming Language**. Simon Lalonde. Markdown source code of presentation.
+<a id="3">[3]</a> **Introduction to Rust Programming Language**. Simon Lalonde. 2024. Markdown source code of presentation.
 
-
+<a id="4">[4]</a> **Rust - Structs, Functions and Methods**. Gian Lorenzetto. 2021. https://gian-lorenzetto.medium.com/rust-structs-functions-and-methods-d60fd597d956
