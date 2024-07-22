@@ -40,7 +40,7 @@
 
 ## Introduction
 
-<span style="color:orange">**Rust**</span> is a modern programming language that focuses on <span style="color:orange">memory safety, speed, and concurrency</span>. It supports *multiple programming paradigms* and can be used for *multiple purposes* (i.e. systems programming, backend/server-side development, CLI tools etc.). Rust is also known for its *ownership system* that allows for memory safety without a garbage collector.
+<span style="color:orange">**Rust**</span> [[0]](#0) is a modern programming language that focuses on <span style="color:orange">memory safety, speed, and concurrency</span>. It supports *multiple programming paradigms* and can be used for *multiple purposes* (i.e. systems programming, backend/server-side development, CLI tools etc.). Rust is also known for its *ownership system* that allows for memory safety without a garbage collector.
 
 This project is part of a course on self-driven learning of theoritical concepts of computer science. I choose to to follow along the Rust book and implementing the projects as an introduction to the language. A work-inprogress `marp` presentation about the summary of concepts learned and implemented projects can is hosted here: https://simlal.github.io/ift-769-self-learning-intro-to-rust/ [[2]](#2). A PDF version can also be found [here](./docs/project-presentation.pdf).
 
@@ -100,6 +100,7 @@ TODO
 
 ## References :books:
 <!-- As numbered footnotes-->
+<a id="0">[0]</a> **Rust Programming Language**. Rust Foundation. 2024. https://www.rust-lang.org/
 <a id="1">[1]</a> **The Rust Programming Language**. Klabnik, Steve, and Carol Nichols. 2nd ed., No Starch Press.
 
 <a id="2">[2]</a> **Introduction to Rust Programming Language**. Simon Lalonde. 2024. GitHub Pages. https://simlal.github.io/ift-769-self-learning-intro-to-rust/
