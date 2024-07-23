@@ -838,6 +838,73 @@ let square = Rectangle::square(10);
 ```
 ---
 
+<h2><img src="https://em-content.zobj.net/source/google/387/clipboard_1f4cb.png" width=60px> Enums <span style="font-weight: normal;"> - Overview</span></h2>
+
+- `Enums` are a way to define a type by enumerating its possible variants
+- Each variant can have different data associated with it (_i.e. `struct`, `String` ..._)
+- Namespaced under identifier, accessed with `Enum::variant` syntax 
+- Default constructor is `Enum::variant(data)`
+```rust
+    enum IpAddr {
+        V4(u8, u8, u8, u8),
+        V6(String),
+    }
+    // Construct instances of each variant
+    let home = IpAddr::V4(127, 0, 0, 1);
+    let loopback = IpAddr::V6(String::from("::1"));
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/clipboard_1f4cb.png" width=60px> Enums <span style="font-weight: normal;"> - Advantages over <code>struct</code></span></h2>
+
+Use of `impl` blocks for **common methods** that applies to **all variants**
+
+```rust
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+} // Could be same as 4 different structs `struct Quit`, `struct Move{...}`
+
+impl Message {
+    fn send(&self) { 
+        // self ref to the variant instance
+        println!("Sending message {:?}...", self);  
+    }
+}
+let m = Message::Write(String::from("Hello, world!"));
+m.send();
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/question-mark_2753.png" width=60px> Option Enum <span style="font-weight: normal;"></span> - <span style="color: red"> NULL free!</span> </h2>
+
+Rust has no `null` value, but uses the `Option` enum to represent the presence or absence of a value from standard library.
+
+```rust
+enum Option<T> { // Generic type T
+    Some(T),     // Some value of type T
+    None,
+}
+
+let x: i8 = 5; 
+let y: Option<i8> = Some(5); // Some value
+let z: Option<i8> = None;  // No value
+
+let sum = x + y;  // Won't compile because i8 + Option<i8> are different types 
+                  // and sum not implemented
+```
+With `Option`, the compiler forces you to handle the case where the value is `None`.
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/crossed-swords_2694-fe0f.png" width=60px> Match Expression<span style="font-weight: normal;"></span></h2>
+
+---
+
 <h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
 
 ---
