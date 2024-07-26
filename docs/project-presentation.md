@@ -901,10 +901,142 @@ With `Option`, the compiler forces you to handle the case where the value is `No
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/crossed-swords_2694-fe0f.png" width=60px> Match Expression<span style="font-weight: normal;"></span></h2>
+<h2><img src="https://em-content.zobj.net/source/google/387/crossed-swords_2694-fe0f.png" width=60px> Match Expression<span style="font-weight: normal;"> - Overview</span></h2>
+
+`match` is a control flow operator that compares a value against a series of patterns and then executes code based on which pattern matches.
+
+```rust
+#[derive(Debug)] // to inspect the state inside match expr
+enum UsState {Alabama, Alaska, //...}
+enum Coin {Penny, Nickel, Dime, Quarter(UsState)}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State quarter from {state:?}!");
+            25
+        } // Passing a Coin::Quarter(UsState::Alaska) will print "State
+    }     // quarter from Alaska!" and return 25
+}     
+```
 
 ---
 
+<h2><img src="https://em-content.zobj.net/source/google/387/crossed-swords_2694-fe0f.png" width=60px> Match Expression<span style="font-weight: normal;"> - Matching with <code>Option&ltT&gt</code></span></h2>
+
+More powerful than `switch` in C/C++ because it can match on any type.
+
+```rust
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
+
+let five = Some(5);             
+let six = plus_one(five);       // returns Some(6)
+let none = plus_one(None);      // returns None
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/crossed-swords_2694-fe0f.png" width=60px> Match Expression<span style="font-weight: normal;"> - Exhaustive matching and catch-all</span></h2>
+
+Evaluation is in order. We can use `other` or `_` to catch all other cases.
+
+```rust
+let dice_roll = 9;
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    other => move_player(other),    // if no param needed, 
+}                                   // use _ => paramless_func()
+
+fn add_fancy_hat() {}
+fn remove_fancy_hat() {}
+fn move_player(num_spaces: u8) {}
+```
+<span style="color: orange;">Powerful (type checking, Option, enums) and concise (no `if-else` chains).</span>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/counterclockwise-arrows-button_1f504.png" width=60px> Concise Control Flow <span style="font-weight: normal;"></span></h2>
+
+Syntax sugar for single match arms with `if` guards or single catch-all arm.
+
+```rust
+let mut count = 0;
+// match version
+match coin {
+    Coin::Quarter(state) => println!("State quarter from {state:?}!"),
+    _ => count += 1,
+}
+// if let version
+if let Coin::Quarter(state) = coin {
+    println!("State quarter from {state:?}!");
+} else {
+    count += 1;
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Common Collections <span style="font-weight: normal;"> - Overview</span></h2>
+
+- Collections are data structures that can store multiple values
+- Heap allocated
+- Unknown size at compile time, but can grow or shrink at runtime
+
+**Discussed here:**
+1. **Vectors** - Dynamic array
+2. **Strings** - UTF-8 encoded
+3. **Hash Maps** - Key/Value pairs
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - Vectors init and access</span></h2>
+
+**Vectors** are dynamic arrays. Generic type of `Vec<T>`
+```rust
+// Initialization
+let v: Vec<u8> = Vec::new();   // type required
+let mut my_vec = vec![1, 2, 3];    // type inferred with `vec!` macro
+my_vec.push(4);                    // Add an element
+```
+
+Accessing elements and bounds checking. Both yield a reference.
+```rust
+let third: &i32 = &my_vec[2];    // Panics! if out of bounds
+println!("The third element is {third}");
+
+let third: Option<&i32> = my_vec.get(2);    // Returns None if out of bounds
+match third {
+    Some(third) => println!("The third element is {third}"),
+    None => println!("There is no third element."),
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - Vectors' iteration and types</span></h2>
+
+Iterate in read-only or mutable mode with `for` loop
+```rust
+for i in &my_vec {    // Readonly
+    println!("{i}");
+}
+```
+
+Store only similar types within same vec, but can use `enum` for different types
+```rust
+```
+
+
+---
 <h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
 
 ---
