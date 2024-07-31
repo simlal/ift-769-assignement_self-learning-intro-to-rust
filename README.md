@@ -24,7 +24,6 @@
 
 - [A simple guessing game CLI app](#a-simple-guessing-game-cli-app-gamedie)
 - [Write an I/O CLI `grep`-clone program](#write-an-io-cli-grep-clone-program-wrench)
-- [Building a Multithreaded Web Server](#building-a-multithreaded-web-server-globe_with_meridians)
 
 </details>
 
@@ -62,7 +61,6 @@ Gain practical experience by implementing the projects from the book and demonst
 **Practical projects:**
 - [x] **Project #0:** [Guessing game CLI app](./projects/guessing_game/)
 - [x] **Project #1:** Write an I/O CLI program (`grep` clone)
-- [ ] **Project #2 (Optional):** Building a Multithreaded Web Server
 
 
 ## Development environment setup :hammer_and_wrench:
@@ -87,10 +85,6 @@ TODO
 
 
 ### Write an I/O CLI `grep`-clone program :wrench:
-
-TODO
-
-### Building a Multithreaded Web Server :globe_with_meridians:
 
 TODO
 

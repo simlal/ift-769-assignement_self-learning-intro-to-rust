@@ -1033,7 +1033,27 @@ for i in &my_vec {    // Readonly
 
 Store only similar types within same vec, but can use `enum` for different types
 ```rust
+{
+    enum CliArg {
+        Int(i32),
+        Text(String),
+    }
+    let mut arguments = vec![
+        CliArg::Int(5),
+        CliArg::Text(String::from("my_database_name")),
+    ];
+    arguments.push(CliArg::Text(String::from("my_table_name")));   // mutable with mixed types
+} // <---- Out of scope, `arguments`'s memory is freed
 ```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - Strings Overview</span></h2>
+
+String `str` std vs `String` type:
+- `str` is immutable, usually used as a slice/reference that can be borrowed
+- `String` is mutable, heap-allocated, growable, and owned
+
 
 
 ---
@@ -1058,18 +1078,12 @@ Store only similar types within same vec, but can use `enum` for different types
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #2 - <span style="font-weight: normal;">Building a Multithreaded Web Server</span></h2>
-
-**Final Project from the book includes :**
-1. Learn TCP/IP networking and HTTP
-2. Listen to TCP connections on a socket
-3. Parse HTTP requests
-4. Generate HTTP responses
-5. Handle multiple requests concurrently with a thread pool
-
-<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
+<p style="text-align: center; font-size: 2em;">🚀 Demo Time!
+<br>
+<p style="text-align: center; font-size: 1.5em;"> I/O CLI program `grep` clone 🧑🏻‍💻</p>
 
 ---
+
 
 <h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> THEORY STUFF <span style="font-weight: normal;"></span></h2>
 
