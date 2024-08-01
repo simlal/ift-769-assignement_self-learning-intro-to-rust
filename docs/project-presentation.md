@@ -46,8 +46,8 @@ paginate: true
 4. Containers/Collections
 5. <span style="color:orange">Error Handling</span>
 6. <span style="color:orange">Generics, Traits and Lifetimes</span>
-7. OO features
-8. <span style="color:orange">Smart pointers and Concurrency</span>
+7. OO features (⚠️ _little covered in this presentation_)
+8. <span style="color:orange">Smart pointers and Concurrency</span> (🛑 _Not covered in this presentation_)
 
 <font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
 
@@ -58,11 +58,16 @@ paginate: true
 Written by **Graydon Hoare in 2006**, Rust is a systems programming language focused on safety, speed, and concurrency. Backed by **Mozilla** and now the Rust Foundation.
 
 <strong><u>Currently known projects</u></strong>
-TODO
+- Now inside some of the Linux kernel
+- Used in components of Firefox browser
+
 <strong><u>Predicted use cases</u></strong>
-TODO
+- Replacement for C/C++ in systems programming and embedded systems
+- WebAssembly, ML/AI, and other performance-critical applications 
 
 <font size="4"> Rust Programming Language. 2024. [Official Website](https://www.rust-lang.org/)</font>
+<font size="4"> Lin Clark. The whole web at maximum FPS: How WebRender gets rid of jank. 2017. [Mozilla Blog](https://hacks.mozilla.org/2017/10/the-whole-web-at-maximum-fps-how-webrender-gets-rid-of-jank/)</font>
+<font size="4">Clive Thompson. How Rust went from a side project to the world’s most-loved programming language. 2023. [TechReview](https://www.technologyreview.com/2023/02/14/1067869/rust-worlds-fastest-growing-programming-language/)</font>
 
 ---
 
@@ -1053,11 +1058,114 @@ Store only similar types within same vec, but can use `enum` for different types
 String `str` std vs `String` type:
 - `str` is immutable, usually used as a slice/reference that can be borrowed
 - `String` is mutable, heap-allocated, growable, and owned
+- `String` is a wrapper around a `Vec<u8>`
 
+```rust
+let mut s = String::new();      // Empty string
+let data = "initial contents";  // str slice
+
+// `to_string` is available on any type that implements the `Display` trait
+let s = data.to_string();                   // Convert &str to String
+let s = String::from("initial contents");   // Same as above
+s.push_str(" and more");                        // Append a string slice, does not take ownership
+println!("{s}");                            // Prints "initial contents and more"
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - String basic ops: Concat</span></h2>
+
+**Concat with `+` or `format!` macro**
+
+`+` Operator is actually a call to add which takes a reference to a `String` and returns a new `String`. So one of the strings will be moved and the other will be borrowed.
+```rust
+let s1 = String::from("Hello, ");
+let s2 = String::from("world!");
+let s3 = s1 + &s2; // s1 has been moved here and can no longer be used
+
+let s4 = String::from("tic");
+let s5 = String::from("toc");
+let s6 = format!("{s4}-{s5}"); // format! does not take ownership
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - String basic ops: Indexing</span></h2>
+
+- Cannot index directly with `[]` because of UTF-8 encoding**
+- Use `&str` slices to index per byte (careful 💀!)
+- Use `chars()` method to iterate over Unicode characters
+
+```rust
+let hello = "Здравствуйте";
+let s = &hello[0..4];   // Corresponds to first 4 bytes so `Зд` in UTF-8
+
+// To iterate per character regardless of size
+for c in hello.chars() {
+    println!("{c}");
+    // prints `З`, `д`, `р`, `а`, `в`, `с`, `т`, `в`, `у`, `й`, `т`, `е`
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - Hash Maps</span></h2>
+
+- `HashMap<K, V>` is a collection of key-value pairs/dictionary/hash table with unique keys
+- Homogenous typing for keys and values
+
+```rust
+use std::collections::HashMap;
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let team_name = String::from("Blue");  // later borrowed by get as `&str`
+let score = scores.get(&team_name).copied().unwrap_or(0);
+// get() returns an Option<&V> so we use copied() to get the value
+// unwrap_or() returns the value or a default if None
+
+// Iterate over key-value pairs
+for (key, value) in &scores {
+    println!("{key}: {value}");
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - Hash Maps Ownership and updates</span></h2>
+
+- Inserts take ownership of the key and value (see [compiler error](https://github.com/simlal/ift-769-self-learning-intro-to-rust/tree/main/projects/hashmaps_test)). Can use references but must be valid for the lifetime of the map.
+- Overwrites the value if the key already exists. Use `entry` to insert instead.
+
+```rust
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+scores.entry(String::from("Yellow")).or_insert(50);  // `entry` returns Entry enum
+scores.entry(String::from("Blue")).or_insert(50);  // `or_insert` returns a mutable reference
+println!("{scores:?}");    // {"Blue": 10, "Yellow": 50}
+```
+Mutable references by `entry.or_insert` to update value
+```rust
+let text = "hello world wonderful world";
+let mut map = HashMap::new();                                                            // {}
+
+for word in text.split_whitespace() {
+    let count = map.entry(word).or_insert(0);
+    *count += 1;   // Dereference count to update the value
+}
+println!("{map:?}");    // {}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - TODO</span></h2>
 
 
 ---
 <h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
+
+
 
 ---
 
