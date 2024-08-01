@@ -1159,8 +1159,141 @@ println!("{map:?}");    // {}
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - TODO</span></h2>
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - (Un)recoverable Errors overview </span><img src="https://em-content.zobj.net/source/google/387/police-car-light_1f6a8.png" width=60px></h2>
 
+<p>Two types of <span style="color:red;">errors</span> in Rust:</p>
+
+1. **Recoverable errors** are handled by `Result<T, E>` enum
+2. **Unrecoverable errors** are handled by `panic!` macro
+<br>
+
+Let's us handle errors in a way that can be made explicit in the function signature.
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/police-car-light_1f6a8.png" width=60px> Error Handling <span style="font-weight: normal;"> - Unrecoverable Errors and <code>panic!</code></span></h2>
+
+Full backtrace on demand when a program encounters an error that it cannot handle.
+
+```rust
+fn main() {
+    let my_vec: Vec<i32> = vec![1, 2, 3];
+    println!("{my_vec[99]}"); // Panics! Index out of bounds
+}
+```
+
+When running with `RUST_BACKTRACE=1 cargo run`, the error message will include a backtrace. See next slide for the output:
+
+--- 
+
+<pre style="background-color: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px; font-size: 0.53em; white-space: pre-wrap;">
+<code>
+~/out_of_bounds_panic main !1 ?1 ❯ <span style="color: #66d9ef;">RUST_BACKTRACE=1 cargo run</span>
+    <span style="color: #a6e22e;">'Finished'</span> `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     <span style="color: #a6e22e;">'Running'</span> `target/debug/out_of_bounds_panic`
+my_deque[0]: a
+<span style="color: #f92672;">thread 'main' panicked at src/main.rs:8:42:</span>
+Out of bounds access
+stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/std/src/panicking.rs:652:5
+   1: core::panicking::panic_fmt
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/panicking.rs:72:14
+   2: core::panicking::panic_display
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/panicking.rs:263:5
+   3: core::option::expect_failed
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/option.rs:1994:5
+   4: core::option::Option<T>::expect
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/option.rs:895:21
+   5: &lt;alloc::collections::vec_deque::VecDeque<T,A> as core::ops::index::Index&lt;usize&gt;&gt;::index
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/mod.rs:2784:25
+   6: out_of_bounds_panic::main
+             at ./src/main.rs:8:42
+   7: core::ops::function::FnOnce::call_once
+             at /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with <span style="color: #66d9ef;">`RUST_BACKTRACE=full`</span> for a verbose backtrace.
+</code>
+</pre>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - Recoverable Errors and <code>Result</code></span></h2>
+
+- `Result<T, E>` is an enum with two variants: `Ok(T)` and `Err(E)` avail from prelude
+- Use match to handle the `Result` enum (both `Ok` and `Err` cases)
+
+```rust
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");                 // Returns Result<File, Error>
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => match error.kind() {                              // ErrorKind enum
+            ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,                                           // Returns the file handle when created
+                Err(e) => panic!("Problem creating the file: {e:?}"),
+            },
+            other_error => {                                            // Choose to panic for other possible ErrorKind
+                panic!("Problem opening the file: {other_error:?}");
+            }
+        },
+    };
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - Unwrap and expect shortcuts</span></h2>
+
+Almost similar behaviors as `match` expression but more concise:
+
+- `unwrap()` returns the value if `Ok` or panics with the error message
+- `expect()` is similar but allows you to specify the error message
+
+```rust
+// Panics with the error message if missing file
+let f = File::open("hello.txt").unwrap();   
+
+// Same as above but with custom message
+let f = File::open("hello.txt").expect("Failed to open hello.txt");  
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - Propagating errors</span></h2>
+
+Return the error to the calling function using type `Result<T, E>` in the function signature.
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {     // Take note of Result enum
+    let username_file_result = File::open("hello.txt");     
+
+    let mut username_file = match username_file_result {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut username = String::new();
+    // Possible to call `.read_to_string()` directly on the Result enum 
+    // even when Err. This is Propagating the error
+    match username_file.read_to_string(&mut username) {
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
+    } // Returns the username or the error
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - Propagating shortcut with <code>?</code> operator</span></h2>
+
+TODO
 
 ---
 <h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
