@@ -1293,16 +1293,184 @@ fn read_username_from_file() -> Result<String, io::Error> {     // Take note of 
 
 <h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> Error Handling <span style="font-weight: normal;"> - Propagating shortcut with <code>?</code> operator</span></h2>
 
+Use of `?` operator to propagate errors and reduce boilerplate code. It is a shortcut for `match` and `return` the error.
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut username = String::new();
+
+    File::open("hello.txt")?.read_to_string(&mut username)?;
+
+    Ok(username)
+}
+```
+
+At each `?`, the error is returned to the calling function if it is of `Err` type. Otherwise, the value is unwrapped and returned.
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> To panic! or not to panic!? <span style="font-weight: normal;"></span><img src="https://em-content.zobj.net/source/google/387/police-car-light_1f6a8.png" width=60px></h2>
+
+When writing library/API code ->better to return `Result` (let caller handle error)...
+
+...But we can use `panic!` when testing, when the state is invalid, calling external code etc.
+<br> 
+
+Take advantage of Rust's <span style="color: orange;">strong type system</span> to catch errors at compile time (more concise code) and use <span style="color: orange;">`Result` enum</span> to handle errors at runtime.
+
+---
+<h2><img src="https://em-content.zobj.net/source/microsoft-teams/337/warning_26a0-fe0f.png" width=60px> OOP-styled safe design example <span style="font-weight: normal;"></span><img src="https://em-content.zobj.net/source/google/387/police-car-light_1f6a8.png" width=60px></h2>
+
+
+```rust
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {   // Interface for the struct with constructor and getter
+    // Constructor panic if value is out of bounds
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {value}.");        
+        }
+        Guess { value }
+    }
+    // borrows self to get the value
+    pub fn value(&self) -> i32 {  
+        self.value   // value is a private, cannot be modified
+    }
+}
+```
+
+Calling `Guess` constructor will panic if out-of-bounds (should be in API docs). `value` can never return an invalid value of an invalid type.
+
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/puzzle-piece_1f9e9.png" width=60px> Generics <span style="font-weight: normal;"> - Data type overview</span></h2>
+
+- **Generics** allow you to define _functions_, _structs_, _enums_, and _methods_ that work with any data type.
+- Like C++ templates, but more type constraints (shared trait) and safety (borrow checker)
+
+**Example of a function that would :**
+- Take a reference to a slice of any type
+- Return a reference to the an object of the same type
+```rust
+fn smallest<T>(list: &[T]) -> &T {...} // 
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/puzzle-piece_1f9e9.png" width=60px> Generics<span style="font-weight: normal;">... Must implement traits</span></h2>
+
+**Traits** are similar to interfaces in other languages. They define a set of methods that a type must implement.
+
+A function cannot use a generic type `T` unless it knows that `T` implements a specific trait.
+
+```rust
+fn largest<T>(list: &[T]) -> &T {
+    let mut largest = &list[0];
+    for item in list {
+        if item > largest {   // Error! T does not implement the `PartialOrd` trait
+            largest = item;
+        }
+    }
+    largest
+}
+
+fn main() {    // Won't compile!!!
+    let number_list = vec![34, 50, 25, 100, 65];                                                            
+    let result = largest(&number_list);
+    println!("The largest number is {result}");
+
+    let char_list = vec!['y', 'm', 'a', 'q'];
+    let result = largest(&char_list);
+    println!("The largest char is {result}");
+}
+```
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/puzzle-piece_1f9e9.png" width=60px> Generics<span style="font-weight: normal;"> - Struct example</span></h2>
+
+Use a single generic type `T` for both fields of the struct. Each field cannot mix types.
+
+```rust
+struct BadPoint<T> {
+    x: T,
+    y: T,
+}
+let wont_work = BadPoint { x: 5, y: 4.0 };
+
+struct GoodPoint<T, U> {   // `U` is just another generic type
+    x: T,
+    y: U,
+}
+let will_work = GoodPoint { x: 5, y: 4.0 };
+```
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/puzzle-piece_1f9e9.png" width=60px> Generics<span style="font-weight: normal;"> - Enum example</span></h2>
+
+stdlib provides `Option` and `Result` enums that use generics. They can expression the presence or absence of a value or the success or failure of an operation.
+
+`Result` even uses multiple generics for its `Ok` and `Err` variants.
+
+```rust
+enum Option<T> {
+    Some(T),    // Holds a value of type T
+    None,       // Does not hold a value
+}
+enum Result<T, E> {
+    Ok(T),      // Holds a value of type T
+    Err(E),     // Holds a value of Type E (error)
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/puzzle-piece_1f9e9.png" width=60px> Generics<span style="font-weight: normal;"> - Method definitions</span></h2>
+Methods written within an `impl` that declares the generic type will be defined on any instance of the type regardless of concrete type substituted.
+
+```rust
+struct Point<T> {
+    x: T,
+    y: T,
+}
+impl<T> Point<T> {    // Can be used by any Point struct
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+impl Point<f32> {   // Specific to Point<f32> structs
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
+
+fn main() {
+    let p = Point { x: 5, y: 10 };    // Cannot use `.distance_from_origin()` because `Point<i32>`
+    println!("p.x = {}", p.x());
+    let p2 = Point { x: 5.0, y: 10.0 };
+    println!("Distance from origin: {p2.distance_from_origin()}");
+}
+```
+
+---
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Traits <span style="font-weight: normal;"> - Shared behavior</span></h2>
+
 TODO
 
----
-<h2><img src="https://em-content.zobj.net/source/google/387/skull-and-crossbones_2620-fe0f.png" width=60px> Dangling Pointers <span style="font-weight: normal;"> - </span></h2>
-
-
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> TODO <span style="font-weight: normal;"></span></h2>
+<!-- Lifetoimes -->
+
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Overview</span></h2>
+
+TODO
 
 ---
 
