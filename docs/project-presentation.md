@@ -10,7 +10,7 @@ paginate: true
 
 <div style="text-align: center;">
     <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="150" height=150 style="margin: 0 30; background-color: white; border-radius: 10px;"> 
-    <img src="https://rustacean.net/assets/rustacean-orig-noshadow.svg" width="150" height=150 style="margin: 0 auto; background-color: white; border-radius: 10px;">
+    <img src="https://raw.githubusercontent.com/aldeka/rustacean.net/main/site/assets/rustacean-orig-noshadow.svg" width="150" height=150 style="margin: 0 auto; background-color: white; border-radius: 10px;">
 </div>
 <br>
 <p style="text-align: center;">Following along <a href="https://doc.rust-lang.org/book/"> The Rust Book</a> from the official source</p>
@@ -48,8 +48,6 @@ paginate: true
 6. <span style="color:orange">Generics, Traits and Lifetimes</span>
 7. OO features (⚠️ _little covered in this presentation_)
 8. <span style="color:orange">Smart pointers and Concurrency</span> (🛑 _Not covered in this presentation_)
-
-<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
 
 ---
 
@@ -129,35 +127,13 @@ Written by **Graydon Hoare in 2006**, Rust is a systems programming language foc
 
 ---
 
-<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #0 - <span style="font-weight: normal;">Guessing game</span></h2>
-
-Great way to introduce to the development environment and basic concepts of Rust:
-- Common programming concepts (types, funcs, control flow)
-- Use of another crate (rand) inside the project
-- I/O, String manipulation, error handling
-- Compiler warnings and error messages
-- `rust-analyzer` compiler FE for IDE support
-
+<p style="text-align: center; font-size: 2em;">🏗️ Basic programming features
+<br>
+<p style="text-align: center; font-size: 1em;">Overview of common programming concepts in Rust</p>
 
 <br>
 
-<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
-
-
----
-
-<p style="text-align: center; font-size: 2em;">🚀 Demo Time!
-<br>
-<p style="text-align: center; font-size: 1.5em;">Simple guessing game CLI app 🎲 (Basics and dev environment features)</p>
-
----
-
-<h2> <img src="https://em-content.zobj.net/source/google/387/magnifying-glass-tilted-right_1f50e.png" width=60px> Demo reminders <span style="font-weight: normal;"> - P#0 (Guessing game)</span></h2>
-
-- `Result` type with `.expect()` for error handling
-- `cargo doc --open` to generate and view documentation
-- `cargo fmt` to format the code
-- Type annotations and `let` for variable declaration
+<p style="text-align: center;"><a href="https://github.com/simlal/ift-769-self-learning-intro-to-rust/blob/main/projects/guessing_game/src/main.rs">./projects/guessing_game</a></p>
 
 ---
 
@@ -183,10 +159,11 @@ const MAX_POINTS: u32 = 100_000;
 
 <h2><img src="https://em-content.zobj.net/source/google/387/abacus_1f9ee.png" width=60px> Statically typed + type inference <span style="font-weight: normal;"></span></h2>
 
-`rust-analyzer` provides type hints and suggestions
+`rust-analyzer` IDE Frontend provides type hints and suggestions
 ```rust
 let secret_num = rand::thread_rng().gen_range(1..101); // Will infer i32 type
 ```
+<br>
 
 Explicit type annotations can or must be used
 ```rust
@@ -340,7 +317,7 @@ while counter < 10 {
 
 <h2><img src="https://em-content.zobj.net/source/google/387/toolbox_1f9f0.png" width=60px> Control Flow<span style="font-weight: normal;"> - Loop labels</span></h2>
 
-**Loop labels** can be used to distinguish nested loops (_break_ and _continue_)
+**Loop labels** can be used to distinguish nested loops (_break_ and _continue_). See [./projects/loop_labels](https://github.com/simlal/ift-769-self-learning-intro-to-rust/blob/main/projects/loop_labels/src/main.rs)
 ```rust
 fn main() {
     let mut count = 0;
@@ -354,7 +331,7 @@ fn main() {
                 break;
             }
             if count == 2 {
-                break 'counting_up;   // Break the outer loop
+                break 'counting_up;   // Break the outer loop                              
             }
             remaining -= 1;
         }
@@ -382,6 +359,36 @@ for number in 1..4 {
     println!("The value is: {number}");
 }
 ```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #0 - <span style="font-weight: normal;">Guessing game</span></h2>
+
+Great way to introduce to the development environment and basic concepts of Rust:
+- Common programming concepts (types, funcs, control flow)
+- Use of another crate (rand) inside the project
+- I/O, String manipulation, error handling
+- Compiler warnings and error messages
+- `rust-analyzer` compiler FE for IDE support
+
+<br>
+
+<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
+
+---
+
+<p style="text-align: center; font-size: 2em;">🚀 Demo Time!
+<br>
+<p style="text-align: center; font-size: 1.5em;">Simple guessing game CLI app 🎲 (Basics and dev environment features)</p>
+
+---
+
+<h2> <img src="https://em-content.zobj.net/source/google/387/magnifying-glass-tilted-right_1f50e.png" width=60px> Demo reminders <span style="font-weight: normal;"> - P#0 (Guessing game)</span></h2>
+
+- `Result` type with `.expect()` for error handling
+- `cargo doc --open` to generate and view documentation
+- `cargo fmt` to format the code
+- Type annotations and `let` for variable declaration
 
 ---
 
@@ -460,11 +467,11 @@ fn main() {
     let s = String::from("hello");  // s comes into scope
 
     takes_ownership(s);             // s's value moves into the function...
+    println!("{s} world!");         // ERROR! s is no longer valid
 
     let x = 5;                      // x comes into scope
-                                    // but i32 is Copy, so x available afterward
-    
-    println!("{s} world!");         // ERROR! s is no longer valid
+    let y = makes_copy(x);          // x would move into the function, but i32 is Copy
+    println!("{x}");                // OK! x us still valid
 } 
 
 fn takes_ownership(some_string: String) { // some_string comes into scope
@@ -1135,7 +1142,7 @@ for (key, value) in &scores {
 
 <h2><img src="https://em-content.zobj.net/source/google/387/open-file-folder_1f4c2.png" width=60px> Collections <span style="font-weight: normal;"> - Hash Maps Ownership and updates</span></h2>
 
-- Inserts take ownership of the key and value (see [compiler error](https://github.com/simlal/ift-769-self-learning-intro-to-rust/tree/main/projects/hashmaps_test)). Can use references but must be valid for the lifetime of the map.
+- Inserts take ownership of the key and value (see [./projects/hashmaps_test](https://github.com/simlal/ift-769-self-learning-intro-to-rust/blob/main/projects/hashmaps_test/src/main.rs)). Can use references but must be valid for the lifetime of the map.
 - Overwrites the value if the key already exists. Use `entry` to insert instead.
 
 ```rust
@@ -1420,7 +1427,7 @@ stdlib provides `Option` and `Result` enums that use generics. They can expressi
 
 ```rust
 enum Option<T> {
-    Some(T),    // Holds a value of type T
+    Some(T),    // Holds some value of type T
     None,       // Does not hold a value
 }
 enum Result<T, E> {
@@ -1432,6 +1439,7 @@ enum Result<T, E> {
 ---
 
 <h2><img src="https://em-content.zobj.net/source/google/387/puzzle-piece_1f9e9.png" width=60px> Generics<span style="font-weight: normal;"> - Method definitions</span></h2>
+
 Methods written within an `impl` that declares the generic type will be defined on any instance of the type regardless of concrete type substituted.
 
 ```rust
@@ -1592,7 +1600,7 @@ fn returns_summarizable(switch: bool) -> impl Summary {
             reply: false,
             retweet: false,
         }
-    }  // Won't COMPILE!
+    }  // Won't COMPILE! Possible workaround with Box<dyn Summary>
 }
 ```
 
@@ -1659,8 +1667,9 @@ fn main() {
 
 <div style="width: 48%;">
 
+<p style="text-align: center;">// WONT COMPILE!</p>
+
 ```rust
-// WONT COMPILE!
 fn main() {
     let r;                // ---------+-- 'a
                           //          |
@@ -1676,8 +1685,9 @@ fn main() {
 
 <div style="width: 48%;">
 
+<p style="text-align: center;">// OK!</p>
+
 ```rust
-// OK!
 fn main() {
     let x = 5;            // ---------+-- 'b
                           //          |
@@ -1697,7 +1707,7 @@ BC compares a' and b' lifetimesd to ensure that the reference in r is valid when
 
 <h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Function signature, not so simple</span></h2>
 
-Maintain the reference's validity by specifying lifetimes in the function signature, otherwise the compiler cannot determine the lifetime of the reference inside the function. [See compiler err](../projects/lifetime_func_sig_err/src/main.rs)
+Maintain the reference's validity by specifying lifetimes in the function signature, otherwise the compiler cannot determine the lifetime of the reference inside the function. See [/projects/lifetime_func_sig_err](https://github.com/simlal/ift-769-self-learning-intro-to-rust/blob/main/projects/lifetime_func_sig_err/src/no_lifetime.rs)
 
 ```rust
 fn longest(x: &str, y: &str) -> &str {
@@ -1717,14 +1727,108 @@ println!("The longest string is {longest(&string1, string2)}");    // Won't Comp
 
 <h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Annotation Syntax</span></h2>
 
-TODO
+- Single quotes and usually are short with ids like `'a`, `'b`...
+- Meant to tell rust how long references are valid in relation to each other.
+
+<u>Standalone example just to show syntax:</u>
+```rust
+&i32        // a reference
+&'a i32     // a reference with an explicit lifetime
+&'a mut i32 // a mutable reference with an explicit lifetime
+```
 
 ---
 
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Function signatures</span></h2>
+
+Use lifetime annotation like generic types to specify that the references must have the same lifetime.
+
+-> In other words, the **lifetime of the reference returned** by the function is the **same as the smaller of the lifetimes of the references passed in**.
+
+```rust
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}   
+// No changes to lifietimes themselves, only making borrow checker
+// reject invalid references to lifetimes constraints
+```
+And to showcase the use of the function on next slide...
+
+---
+
+```rust
+// OK!
+fn main() {
+    let string1 = String::from("long string is long");
+
+    {
+        let string2 = String::from("xyz");
+        let result = longest(string1.as_str(), string2.as_str());
+        println!("The longest string is {result}");
+    } // string2 goes out of scope here, but string1 is still valid
+}
+```
+ See [/projects/lifetime_func_sig_err](https://github.com/simlal/ift-769-self-learning-intro-to-rust/blob/main/projects/lifetime_func_sig_err/src/longest_lifetime.rs)
+
+```rust
+// WON'T COMPILE!
+fn main() {
+    let string1 = String::from("long string is long");
+    let result;
+    {
+        let string2 = String::from("xyz");
+        result = longest(string1.as_str(), string2.as_str());
+    }  // `longest()` return lifetime is smaller of lifetimes passed-in
+       // therefore borrow checker will reject as string2 does not live long enough
+    println!("The longest string is {result}");
+}
+```
+</div>
+</div>
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - In <code>struct</code> definitions </span></h2>
+
+Safety for the struct instance cannot outlive the reference it holds. 
+
+```rust
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+fn main() {
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    let first_sentence = novel.split('.').next().unwrap();
+    let i = ImportantExcerpt { part: first_sentence };
+}
+```
+Let's say first sentence is invalidated by the novel being dropped (out of scope, freed), then the field `part` in `ImportantExcerpt` would be a dangling reference. Thus, the **borrow checker** will reject the code.
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Defaults and rules</h2>
+
+To simplify, Rust has **lifetime elision rules** that allow the compiler to infer lifetimes in many cases. Here are the <u>elision rules:</u>
+
+1. Each parameter that is a reference gets its own lifetime parameter: <code>fn foo<'a>(x: &'a i32)</code> and <code>fn foo<'a, 'b>(x: &'a i32, y: &'b i32)</code>.
+2. If exactly 1 input lifetime param, gets assigned to all output lifetime params: <code>fn foo<'a>(x: &'a i32) -> &'a i32</code>.
+3. If multiple input lifetime params, but one is `&self` or `&mut self`, the lifetime of `self` is assigned to all output lifetime params.
+<br>
+
+**`'static` lifetime** is a special lifetime that lasts for the entire duration of the program (i.e. string litterals)
+```rust
+let s: &'static str = "I have a static lifetime.";
+```
+---
 
 <h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #1 - <span style="font-weight: normal;">Write an I/O CLI program</span></h2>
 
-**Halfway project for a `grep` clone CLI app covers:**
+**Project for a `grep` clone CLI app covers:**
 1. Code organization (crates, modules)
 2. Use of containers and strings
 3. Error handling
@@ -1737,13 +1841,20 @@ TODO
 
 <p style="text-align: center; font-size: 2em;">🚀 Demo Time!
 <br>
-<p style="text-align: center; font-size: 1.5em;"> I/O CLI program `grep` clone 🧑🏻‍💻</p>
+<p style="text-align: center; font-size: 1.5em;"> 🧑🏻‍💻 I/O CLI program `grep` clone: <a href="https://github.com/simlal/ift-769-self-learning-intro-to-rust/tree/main/projects/minigrep">minigrep</a></p> 
 
 ---
 
+<h2><img src="https://em-content.zobj.net/source/google/387/rocket_1f680.png" width=60px> Conclusion <span style="font-weight: normal;"></span></h2>
 
-<h2><img src="https://em-content.zobj.net/source/google/387/gear_2699-fe0f.png" width=60px> THEORY STUFF <span style="font-weight: normal;"></span></h2>
+Only scratched the surface of Rust's features as this material covers half of the book! <u>Remaining topics to be covered:</u>
+- <span style="color: orange">Closures, iterators, smart pointers, advanced pattern matching and concurrency </span> (language features)
+- <span style="color: DarkCyan">Testing, documentation, and cargo </span> (tooling)
 
-TODO
+Still, we have seen how Rust's <span style="color: orange">strong type system, ownership, and borrowing</span> and why it is considered a strong candidate for replacing C/C++ in systems programming, backends, and high-performance applications.
 
+Regardless of the learning curve, because of its performance and memory safety, **Rust is being more adopted in both academia and industry.**
+
+<font size="4">Klabnik, Steve, and Carol Nichols. The Rust Programming Language. 2nd ed., No Starch Press.</font>
+<font size="4">Rust for Linux. 2024. https://rust-for-linux.com/industry-and-academia-support</font>
 
