@@ -1461,8 +1461,170 @@ fn main() {
 ---
 <h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Traits <span style="font-weight: normal;"> - Shared behavior</span></h2>
 
-TODO
+Similar to interfaces in other lang like _Java, C#_.
+Group methods signatures into a set of behaviors tied to a type
 
+
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+```
+<u>Keywords:</u>
+- `pub` makes the trait public. Can be accessed outside of this crate
+- `fn` defines a method signature
+- `trait` keyword defines the trait.
+
+Public `Summary` trait has a single method `summarize` that returns a `String`. Not implemented yet.
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Traits <span style="font-weight: normal;"> - Implementing a trait on a Type</span></h2>
+
+As mentionned, a trait is a set of behaviors that a type can implement. 
+
+<u>Keywords (continued):</u>
+- `impl` keyword to implement the trait on a type
+- `for` keyword to specify the type
+
+
+Here is how to implement the `Summary` trait on a `NewsArticle` and `Tweet` structs:
+
+---
+We are building an `aggregator` crate in `src/lib.rs`:
+
+```rust
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+```
+
+---
+
+We must bring that trait into scope to use it. We can do this by adding a `use` statement at the top of the file.
+
+```rust
+use aggregator::{Summary, Tweet};
+
+fn main() {
+    let tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    };
+
+    println!("1 new tweet: {}", tweet.summarize());
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Traits <span style="font-weight: normal;"> - Trait as parameters</span></h2>
+
+Define functions that accept multiple types using traits.
+
+```rust
+pub fn notify(item: &impl Summary) {
+    println!("Breaking news! {}", item.summarize());
+}
+
+pub fn notify<T: Summary>(item1: &T, item2: &T) {} // Same as above, but more verbose 
+                                                   // and allows multiple types
+```
+
+- `item` can be any type that implements `Summary`.
+- Allows calling `summarize` method on `item`.
+- Ensures type safety: only types implementing `Summary` are accepted.
+
+**This means we can call `notify` on both `NewsArticle` and `Tweet` instances, but not on other types.**
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Traits <span style="font-weight: normal;"> - Return types with implemented traits</span></h2>
+
+Return types can also be traits. This is useful when returning different types that implement the same trait. <span style="color: red;">**WARNING: Needs to return only one type.**</span>
+
+```rust
+fn returns_summarizable(switch: bool) -> impl Summary {
+    if switch {
+        NewsArticle {
+            headline: String::from(
+                "Penguins win the Stanley Cup Championship!",
+            ),
+            location: String::from("Pittsburgh, PA, USA"),
+            author: String::from("Iceburgh"),
+            content: String::from(
+                "The Pittsburgh Penguins once again are the best \                                       
+                 hockey team in the NHL.",
+            ),
+        }
+    } else {
+        Tweet {
+            username: String::from("horse_ebooks"),
+            content: String::from(
+                "of course, as you probably already know, people",
+            ),
+            reply: false,
+            retweet: false,
+        }
+    }  // Won't COMPILE!
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Traits <span style="font-weight: normal;"> - Powerful conditionally <code>impl</code> method</span></h2>
+
+Using the `+` operator to specify multiple traits. Here we can only use cmp_display on types that implement both `PartialOrd` (comparison) and `Display`.
+
+```rust
+use std::fmt::Display;
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);                                  
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
+```
 
 ---
 
@@ -1470,9 +1632,95 @@ TODO
 
 <h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Overview</span></h2>
 
+Rust compiler requires annotation of lifetimes (how long references are valid) to ensure runtime safety.
+
+**Main goal is to prevent dangling references 💀.**
+
+```rust
+fn main() {
+    let r;   // r is not null, its not even init
+
+    {
+        let x = 5;
+        r = &x;
+    }
+
+    println!("r: {r}");    // Error! x is out of scope (does not live long enough) 
+                           // and r is a dangling reference
+}
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Borrow checker mechanism</span></h2>
+
+<!-- make side by side code examples -->
+<div style="display: flex; justify-content: space-between;">
+
+<div style="width: 48%;">
+
+```rust
+// WONT COMPILE!
+fn main() {
+    let r;                // ---------+-- 'a
+                          //          |
+    {                     //          |
+        let x = 5;        // -+-- 'b  |
+        r = &x;           //  |       |fire
+                          //          |
+    println!("r: {r}");   //          |
+}                         // ---------+
+```
+</div>
+
+
+<div style="width: 48%;">
+
+```rust
+// OK!
+fn main() {
+    let x = 5;            // ---------+-- 'b
+                          //          |
+    let r = &x;           // --+-- 'a  |
+                          //   |      |
+    println!("r: {r}");   //   |      |
+}                         // --+      |
+                          //          |
+                          // ---------+
+```
+</div>
+</div>
+
+BC compares a' and b' lifetimesd to ensure that the reference in r is valid when it is used. Basically is 'a > 'b?
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Function signature, not so simple</span></h2>
+
+Maintain the reference's validity by specifying lifetimes in the function signature, otherwise the compiler cannot determine the lifetime of the reference inside the function. [See compiler err](../projects/lifetime_func_sig_err/src/main.rs)
+
+```rust
+fn longest(x: &str, y: &str) -> &str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+// Used as follows
+let string1 = String::from("long string is long");
+let string2 = "shortest";
+println!("The longest string is {longest(&string1, string2)}");    // Won't Compile!
+```
+
+---
+
+<h2><img src="https://em-content.zobj.net/source/google/387/ring-buoy_1f6df.png" width=60px> Lifetimes <span style="font-weight: normal;"> - Annotation Syntax</span></h2>
+
 TODO
 
 ---
+
 
 <h2><img src="https://em-content.zobj.net/source/google/387/hammer-and-wrench_1f6e0-fe0f.png" width=60px> Practical project #1 - <span style="font-weight: normal;">Write an I/O CLI program</span></h2>
 
