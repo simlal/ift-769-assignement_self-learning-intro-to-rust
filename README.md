@@ -40,12 +40,12 @@
 
 <span style="color:orange">**Rust**</span> [[0]](#0) is a modern programming language that focuses on <span style="color:orange">memory safety, speed, and concurrency</span>. It supports *multiple programming paradigms* and can be used for *multiple purposes* (i.e. systems programming, backend/server-side development, CLI tools etc.). Rust is also known for its ***ownership and lifetime systems***, ***strong type checking*** that allows for memory safety without a garbage collector safeguarded by the compiler's borrow checker.
 
-This project is half of a course on self-driven learning of theoritical concepts of computer science. I choose to to follow along the Rust book and implementing the projects as an introduction to the language. A `marp` presentation about the summary of concepts learned and implemented projects can is hosted here: https://simlal.github.io/ift-769-self-learning-intro-to-rust/ [[2]](#2). A PDF version can also be found [here](./docs/project-presentation.pdf).
+This project is half of a course on self-driven learning of theoritical concepts of computer science. I choose to to follow along the Rust book and implementing the projects as an introduction to the language. A `marp` presentation about the summary of concepts learned and implemented projects can is hosted here: https://simlal.github.io/ift-769-assignement_self-learning-intro-to-rust/ [[2]](#2). A PDF version can also be found [here](./docs/project-presentation.pdf).
 
 ### Assignement requirements :memo:
 - [x] Choose a reference manual for a subject of interest in computer science (_The Rust Programming Language_ by Steve Klabnik and Carol Nichols) [[1]](#1)
 - [x] Follow the book to learn the concepts and apply to the proposed projects from the book.
-- [x] Make a [presentation](https://simlal.github.io/ift-769-self-learning-intro-to-rust/) [[2]](#2) (Markdown source code [[3]](#3)) of the theoritical concepts of Rust.
+- [x] Make a [presentation](https://simlal.github.io/ift-769-assignement_self-learning-intro-to-rust/) [[2]](#2) (Markdown source code [[3]](#3)) of the theoritical concepts of Rust.
     See custom scripts within for docs generation automation:
         - `nix-shell` environment: [build-docs.nix](./docs/build-docs.nix)
         - Helpers: [compress-jpgs.sh](./docs/compress-jpgs.sh) + [build-docs.sh](./docs/build-docs.sh).
@@ -75,7 +75,7 @@ See ***Project #0: Guessing Game*** goes through the process of setting up the d
 
 ## Summarizing the key concepts learned
 
-As mentionned earlier, the presentation can be found [here](https://simlal.github.io/ift-769-self-learning-intro-to-rust/). The following are the key concepts learned from the book:
+As mentionned earlier, the presentation can be found [here](). The following are the key concepts learned from the book:
 - Basic programming concepts (variables, functions, control flow)
 - <span style="color:orange; font-weight: bold;">Ownership, borrowing, and references </span> 
 - Specific data types and collections (struct, enums, vectors, strings)
@@ -116,7 +116,7 @@ Regardless of the learning curve, because of its performance and memory safety, 
 <a id="0">[0]</a> **Rust Programming Language**. Rust Foundation. 2024. https://www.rust-lang.org/
 <a id="1">[1]</a> **The Rust Programming Language**. Klabnik, Steve, and Carol Nichols. 2nd ed., No Starch Press.
 
-<a id="2">[2]</a> **Introduction to Rust Programming Language**. Simon Lalonde. 2024. GitHub Pages. https://simlal.github.io/ift-769-self-learning-intro-to-rust/
+<a id="2">[2]</a> **Introduction to Rust Programming Language**. Simon Lalonde. 2024. GitHub Pages. https://simlal.github.io/ift-769-assignement_self-learning-intro-to-rust/
 
 <a id="3">[3]</a> **Introduction to Rust Programming Language**. Simon Lalonde. 2024. Markdown source code of presentation.
 
